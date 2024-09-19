@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Ceará Cientifico</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f5;
+            color: #004d40;
+        }
+        header {
+            background-color: #004d40;
+            color: rgb(255, 255, 255);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #00796b;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        nav a {
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 12px;
+            background: #004d40;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            margin: 0 0.5rem;
+            font-weight: 500;
+        }
+        nav a:hover {
+            background-color: #00796b;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .section, .timeline, .modal-content {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+        .section h2, .timeline h2 {
+            margin-top: 0;
+            border-bottom: 3px solid #004d40;
+            padding-bottom: 0.5rem;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+        .section p, .timeline ul {
+            line-height: 1.8;
+        }
+        .timeline ul {
+            list-style-type: none;
+            padding: 0;
+            position: relative;
+        }
+        .timeline ul::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: #004d40;
+            transform: translateX(-50%);
+        }
+        .timeline li {
+            position: relative;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #00796b;
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .timeline li:nth-child(even) {
+            margin-left: 0;
+            margin-right: auto;
+            text-align: left;
+        }
+        .timeline li:nth-child(odd) {
+            margin-right: 0;
+            margin-left: auto;
+            text-align: right;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .modal-content button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #004d40;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+        .modal-content button:hover {
+            background-color: #00796b;
+        }
+        footer {
+            background-color: #004d40;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+        footer ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+            background-color: #00796b;
+            color: white;
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+        }
+        footer ul li {
+            margin: 0;
+            padding: 0.5rem 1rem;
+            display: inline;
+            font-weight: 500;
+        }
+        .photos-container {
+            max-height: 300px;
+            overflow-y: scroll;
+        }
+        .photos-container img {
+            width: 100%;
+            max-width: 300px;
+            margin: 0.5rem;
+            border-radius: 8px;
+        }
+
+        /* Estilos para dispositivos móveis */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.75rem;
+            }
+            nav a {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            .container {
+                padding: 0 1rem;
+            }
+            .timeline ul::before {
+                left: 5%;
+            }
+            .timeline li {
+                width: 90%;
+                margin-left: 0;
+                margin-right: auto;
+                text-align: left;
+            }
+            .photos-container img {
+                max-width: 100%;
+            }
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function openModal(section) {
+            document.getElementById(section).style.display = 'flex';
+        }
+
+        function closeModal(section) {
+            document.getElementById(section).style.display = 'none';
+        }
+
+        function isMobile() {
+            return /Mobi|Android/i.test(navigator.userAgent);
+        }
+
+        window.onload = function() {
+            if (isMobile()) {
+                document.body.style.backgroundColor = '#e0f2f1';
+            } else {
+                document.body.style.backgroundColor = '#f0f4f5';
+            }
+        }
+    </script>
+    <!-- Cabeçario -->
+</head>
+<body>
+    <header>
+        <h1>Projeto Ceará Cientifico</h1>
+        <h2>Dando voz às mulheres: usando o inglês e desconstruindo estereótipos.</h2>
+    </header>
+<!-- Botões -->
+    <nav>
+        <a href="javascript:void(0);" onclick="openModal('resumo')">Introdução ao Trabalho</a>
+        <a href="javascript:void(0);" onclick="openModal('metodologia')">Metodologia</a>
+        <a href="javascript:void(0);" onclick="openModal('objetivo')">Objetivo Geral e Específico</a>
+        <a href="javascript:void(0);" onclick="openModal('conclusao')">Relevância do Projeto</a>
+        <a href="javascript:void(0);" onclick="openModal('fotografias')">Mural de Fotografias</a>
+        <a href="javascript:void(0);" onclick="openModal('fotografias')">Mural de Fotografias</a>
+        <a href="javascript:void(0);" onclick="openModal('analise')">Análise e Discussão de Resultados</a>
+        <a href="javascript:void(0);" onclick="openModal('relevancia')">Relevância do Projeto</a>
+        <a href="javascript:void(0);" onclick="openModal('gráfico')">Gráficos</a>
+    </nav>   
+
+    <div class="container">
+        <section>
+            <h2>Autores do Trabalho</h2>
+            <li><strong>Professor Orientador:</strong> Rômulo Pereira Figueiredo</li>
+            <li><strong>Aluno¹:</strong> Bergson Domingos de Freitas</li>
+            <li><strong>Aluno²:</strong> Analyce Marques de Freitas</li>
+        </section>
+
+        <section>
+            <h2>Justificativa do trabalho</h2>
+            <p>O trabalho realizado visa explorar a influência de termos machistas em inglês no cotidiano como um todo, um tema de relevância que vem crescendo juntamente com a sociedade. Com os avanços da sociedade e a influência internacional do inglês, as expressões e termos dessa língua influente, vem se inserindo em vários lugares, incluindo o Brasil. O objetivo dessa pesquisa é identificar como esses termos podem ser influentes no machismo, e até mesmo conscientizar os alunos do Colégio Estadual Rui Barbosa para que eles tenham conhecimento dos termos e possam reprimi-los quando avistarem. Usando uma abordagem qualitativa, buscamos identificar como esses termos influenciam as pessoas como um todo. Este trabalho é de extrema importância para entendermos os processos linguísticos e culturais que cercam o machismo e abordar  uma reflexão crítica sobre a linguagem que usamos. E ao mesmo tempo, buscamos contribuir para a diminuição da descriminação no que diz respeito às mulheres.</p>
+        </section>
+
+        <section>
+            <h2>Termos em Inglês</h2>
+            <li>➜ <strong>Mansplaining:</strong> mansplaining – “man” (homem) + “explaining” (explicar) – que tem como objetivo mostrar que uma mulher não tem conhecimento sobre assuntos gerais – ou pelo menos não tanto quanto um homem.</li>
+            <li><strong>Exemplo:</strong> vamos supor que você é uma mulher que gosta de futebol e começa a falar sobre o assunto com um homem. Durante o assunto, esse cara começa a te explicar o que é impedimento sem que você pergunte. Isso é mansplaining.</li>
+            <li>➜ <strong>Manterrupting:</strong> o termo é uma junção das palavras “man” (homem) e “interrupting” (interrupção) e pode ser traduzido como “homens que interrompem”. Ele é usado quando acontece exatamente isso: um homem interrompe uma mulher enquanto ela fala, não permitindo que ela consiga concluir um raciocínio ou até mesmo uma frase simples.</li>
+            <li><strong>Exemplo:</strong> em uma reunião de trabalho, o homem corta a fala da mulher e toma a palavra ou começa a falar junto (por cima) da mulher. Isso é manterrupting.</li>
+            <li>➜ <strong>Gaslighting:</strong> o termo recebe esse nome por causa de um filme chamado “Gaslight”, no qual um homem quer fazer sua esposa acreditar que está enlouquecendo. Para isso, por exemplo, o marido fazia com que as lâmpadas de casa acendessem e apagassem repetidamente, convencendo a mulher de que aquilo estava acontecendo apenas para ela. Na trama, ela começa a acreditar que está ficando louca e que o piscar das luzes é coisa da sua cabeça. </li>
+            <li><strong>Exemplo:</strong> quando um homem diz que ela está "enlouquecendo", ou tenta manipula-la para que ela acredite que está. </li>
+            <li>➜ <strong>Bropriating:</strong> muito comum no ambiente de trabalho, o bropriating é um termo usado para se referir a situações nas quais homens tomam como suas ideias expressadas por mulheres, recebendo os devidos créditos por elas. Bropriating é a abreviação de bropropriating, um neologismo em inglês formado pela junção de bro (de “brother”, “cara”) e propriating (de “appropriating”, apropriação). Ou seja, é quando um cara se apropria da ideia de alguém, geralmente uma mulher, já que o sexo feminino pode ter sua inteligência constantemente menosprezada.</li>
+            <li><strong>Exemplo:</strong> um exemplo clássico de bropriating: uma mulher propõe algo durante uma reunião ou conversa e todos fazem silêncio. Pouco tempo depois, a mesma coisa é proposta por um homem e todos recebem a ideia de forma positiva.</li> 
+            <li>➜ <Strong>Slut-shaming:</Strong> é a junção das palavras “slut”e “shaming”, que significam respectivamente: prostituta e vergonha. Se caracteriza por discriminar mulheres ou meninas com palavras que tenham um sentido negativo sexualmente de acordo com os padrões impostos pelo machismo ao gênero feminino.</li>
+            <li><strong>Exemplo:</strong> um homem chama uma mulher de "prostituta" ou "v4dia" por conta de um aspecto fisico, como por exemplo sua vestimenta. Isso se caracteriza como Slut-Shaming".</li>
+            <li>➜ <strong>Body-shaming:</strong> na tradução, a expressão significaria “vergonha do corpo”. Porém, não é uma vergonha própria, mas provocada por outro com o intuito de ofender ou humilhar a pessoa alvo dos comentários e reprimendas por conta de aspectos do corpo dela. Atinge todos os dias principalmente as mulheres, muitos homens fazem comentários grosseiros a respeito da aparência e peso de suas próprias companheiras, comparando-as  com outras mulheres ou causando algum tipo de constrangimento.</li>
+
+
+
+        </section>
+
+    <section>
+        <h2>Palavras chaves</h2>
+        <li>Mulher;</li>
+        <li>preconceito;</li>
+        <li>Saúde;</li>
+        <li>Expressões.</li>
+    </section>
+
+
+
+
+    <section>
+        <h2>Fundamentação Teorica</h2>
+        <p>A linguagem não é apenas um meio de comunicação, mas também um reflexo e um agente de práticas sociais e culturais. A teoria linguística de Sapir-Whorf sugere que a forma como pensamos está profundamente ligada à linguagem que usamos, implicando que expressões e termos influenciam nossas percepções e comportamentos (Sapir, 1929; Whorf, 1956). No contexto do machismo, isso é particularmente relevante, pois a linguagem pode tanto refletir quanto reforçar desigualdades de gênero.Os termos machistas em inglês, como em qualquer idioma, muitas vezes são fruto de uma tradição cultural que perpetua estereótipos e normas patriarcais. De acordo com o conceito de "discurso hegemônico" de Antonio Gramsci (1971), a linguagem dominante serve para manter a ordem social e as desigualdades existentes, naturalizando práticas e ideologias discriminatórias. Quando expressões machistas são integradas em diferentes contextos, como no inglês, elas contribuem para a manutenção desses padrões.A "Teoria Feminista da Linguagem" (Mills, 2008) explora como a linguagem contribui para a construção de identidades de gênero e a perpetuação de desigualdades. Termos machistas muitas vezes reforçam uma visão hierárquica das relações de gênero e podem influenciar o comportamento das pessoas ao normalizar atitudes desiguais.         Esta fundamentação teórica destaca a importância de examinar as expressões linguísticas para entender como elas moldam e perpetuam ideologias machistas, sublinhando a necessidade de uma abordagem crítica e educacional para enfrentar e transformar essas práticas.</p>
+    </section>
+    
+    <section>
+        <h2>Referências Bibliográficas</h2>
+        <p>De Antonio Gramsci (1971): discurso hegemônico. Disponível em <a href="https://www.scielo.br/j/ln/a/mQtGPDfjR85HxSSLtmgCzbM/#">https://www.scielo.br/j/ln/a/mQtGPDfjR85HxSSLtmgCzbM/#</a> Acesso em 4 jun. 2024.</p>
+        <p>MILLS, Sara. Language and Sexism. Cambridge, New York: Cambridge University Press,2008.</p>
+        <p>MILLS, Sara; MULLANY, Louise. Language, gender and feminism: theory, methodology and practice. London/New York: Routledge, 2011. 206 p</p>
+        <p>De Tayla Pinotti; Machismo: saiba o que significam os termos em inglês. Disponível em <a href="https://universo.salonline.com.br/atitudes-machistas">https://universo.salonline.com.br/atitudes-machistas</a></p>
+        <p>Por Renata Zampronio: Entenda 7 Termos Feministas em Inglês. Disponível em <a href="https://businessporelas.com/entenda-7-termos-feministas-em-ingles">https://businessporelas.com/entenda-7-termos-feministas-em-ingles</a></p>
+        <p>De Leonardo Valle: Mansplaining, manterrupting, bropriating e gaslighting: mulheres compartilham suas experiências com o machismo. Disponível em <a href="https://www.institutoclaro.org.br/cidadania/nossas-novidades/reportagens/mansplaining-manterrupting-bropriating-e-gaslighting-mulheres-compartilham-suas-experiencias-com-o-machismo">https://www.institutoclaro.org.br/cidadania/nossas-novidades/reportagens/mansplaining-manterrupting-bropriating-e-gaslighting-mulheres-compartilham-suas-experiencias-com-o-machismo</a></p>
+    </section>
+
+
+    <!-- Modais ou botões -->
+    <div id="resumo" class="modal">
+        <div class="modal-content">
+            <button onclick="closeModal('resumo')">Fechar</button>
+            <h2>Resumo do Trabalho</h2>
+            <p>O presente trabalho acadêmico propõe uma profunda reflexão sobre o papel da mulher na sociedade dando ênfase a diversos preconceitos que as mesmas sofrem no seu dia a dia, a partir de uma pesquisa realizada com diversos alunos do Colégio Estadual Rui Barbosa a respeito de expressões em inglês, como por exemplo, ao preconceito sofrido por elas que muitas vezes interfere na sua qualidade de vida e até mesmo em sua saúde psicológica. No âmbito de uma pesquisa qualitativa foi investigado por meio de entrevistas que diversos alunos não tinham conhecimento sobre as palavras estudadas. A pesquisa identificou um cenário em que por diversas vezes cometemos preconceito sem percebermos.</p>
+        </div>
+    </div>
+    
+    <div id="metodologia" class="modal">
+        <div class="modal-content">
+            <button onclick="closeModal('metodologia')">Fechar</button>
+            <h2>Metodologia</h2>
+            <li><strong>Coleta de dados/informações</strong>: através de um estudo e pesquisa de palavras machistas em inglês que mais são utilizadas na sociedade, fizemos uma pesquisa desenvolvida no Google Forms e aplicada aos alunos de todas as séries (manhã e tarde) do Colégio Estadual Rui Barbosa.</li>
+            <li><strong>Análise de dados:</strong>: com os dados em mãos analisaremos os padrões e termos mais utilizados pelos alunos, assim também os termos que os mesmos desconhecem, assim trabalhando em cima do resultado em sala de aula, como em eletivas de inglês.            </li>
+            <li><strong>Implementação de material educativo:</strong> por meio de palestras ministradas nas salas de aula, apresentamos os dados aos alunos, assim fazendo os mesmos refletirem sobre o tema abordado e se conscientizarem a respeito. Também será realizada a distribuição de panfletagem, abordando as expressões que foram abordadas nas aulas de inglês, e instruindo o repúdio a cenas machistas</li>
+            <li><strong>Avaliação</strong> ministraremos uma nova pesquisa que será pedido para os PDT’s (Professores Diretores de Turma) colocarem nos grupos. A pesquisa irá conter uma avaliação sobre o nosso projeto, e a eficácia que ele teve ao todo para o Colégio Rui Barbosa.</li>
+        </div>
+    </div>
+    <div id="objetivo" class="modal">
+        <div class="modal-content">
+            <button onclick="closeModal('objetivo')">Fechar</button>
+            <h2>Objetivo Geral</h2>
+            <p>O trabalho tem o objetivo de educar e instruir a comunidade sobre os termos machistas em inglês que para eles eram desconhecidos, assim promovendo o conhecimento sobre o tema abordado fazendo-os refletirem sobre suas ações perante o público feminino.</p>
+            <h2>Objetivo Específico</h2>
+            <p>O objetivo específico deste trabalho é identificar e instruir a sociedade a termos em inglês que remetem ao machismo (“MAINSPLAING - quando o homem julga que a mulher não entende do assunto e ele explica detalhadamente”, “MANTERRUPTING - Quando o homem fica sempre interropendo a fala da mulher”, “GASLIGHTING - Quando o homem coloca na cabeça da mulher como se ela fosse inferior a ele, como se ele estivesse fazendo uma manipulação psicologica”). Através de material educativo, atividades aplicadas em sala de aula, palestras e instruções ministradas pelo professor de eletiva (inglês), buscamos conectar o público alvo ao tema deste trabalho.O mesmo visa promover o conhecimento sobre o impacto que esses termos muito utilizados têm na sociedade, em que pode afetar a vida da vítima. Por meio das atividades aplicadas o público alvo (alunos do Colégio Estadual Rui Barbosa) poderão ter conhecimento prévio sobre o tema tratado, podendo de certa forma mudar seu linguajar, aplicando termos que remetem a igualdade de gênero. Além disso, o trabalho tem o objetivo de incentivar os alunos a combater os termos (se os mesmos presenciarem), contribuindo para um ambiente mais igualitário e consciente nas interações sociais e profissionais. O objetivo no modo geral é conscientizar os alunos e incentivar a não utilização dessas expressões, ajudando a criar uma sociedade mais acolhedora e menos machista.
+            </p>
+        </div>
+    </div>
+    <div id="conclusao" class="modal">
+        <div class="modal-content">
+            <button onclick="closeModal('conclusao')">Fechar</button>
+            <h2>Relevância do Projeto</h2>
+            <li>O projeto se releva a ter um objetivo para desconstruir estereótipos em relação ao machismo na sociedade como um todo, utilizando a língua inglesa que tem bastante influência em todo o mundo. Ao expor e discutir o tema, o projeto inclui a incentivação para que o público alvo possa mudar sua visão sobre o tema tratado, tendo uma sociedade mais integral e justa.
+                O trabalho aborda como o machismo se distribui na sociedade, especificamente na língua inglesa, que é um idioma falado ao redor do mundo. Com foco em identificar e combater os termos e expressões do machismo, como por exemplo, “MAINSPLAING”, “MANTERRUPTING”, “GASLIGHTING”, e etc, o projeto ajuda a conscientizar os alunos.
+                   A pesquisa tem um papel instrutivo e importante na aplicação  de ferramentas para identificar e entender o machismo na linguagem. </li>
+        </div>
+    </div>
+    <div id="fotografias" class="modal">
+        <div class="modal-content">
+            <button onclick="closeModal('fotografias')">Fechar</button>
+            <h2>Fotografias</h2>
+            <div class="photos-container">
+                <img src="imagens/foto7.jpeg" alt="Fotografia 1">
+                <img src="imagens/foto2.jpeg" alt="Fotografia 2">
+                <img src="imagens/foto3.jpeg" alt="Fotografia 3">
+                <img src="imagens/foto4.jpeg" alt="Fotografia 4">
+                <img src="imagens/foto5.jpeg" alt="Fotografia 5">
+                <img src="imagens/foto6.jpeg" alt="Fotografia 6">
+                <img src="imagens/foto8.jpeg" alt="Fotografia 8">
+                <img src="imagens/foto9.jpg" alt="Fotografia 9">
+                <img src="imagens/foto10.jpg" alt="Fotografia 10">
+                <img src="imagens/foto11.jpg" alt="Fotografia 11">
+                <img src="imagens/foto12.jpg" alt="Fotografia 12">
+                <img src="imagens/foto13.jpg" alt="Fotografia 13">
+                <img src="imagens/foto14.jpg" alt="Fotografia 14">
+                <img src="imagens/foto15.jpg" alt="Fotografia 15">
+                <img src="imagens/foto16.jpg" alt="Fotografia 16">
+                
+
+
+            </div>
+        </div>
+    </div>
+    <div id="analise" class="modal">
+        <div class="modal-content">
+            <button onclick="closeModal('analise')">Fechar</button>
+            <h2>Análise e Discussão de Resultados</h2>
+            <p>Durante a pesquisa, fizemos um questionário com 7 perguntas armazenado no Google Formulários, e convidamos alunos (homens e mulheres) em grupos de três em três dando um total de 127 entrevistados para responder o mesmo. Foi abordado se os estudantes tinham conhecimento sobre os termos machistas em inglês.
+                Podemos concluir com os resultados analisados que a média de acertos foi de 3 perguntas em um total de 7. Concluindo assim que os alunos não tinham prévio conhecimento do tema estudado, assim adquirindo o conhecimento sobre os termos em inglês analisados, dando margem para o comportamento machista mesmo que involuntariamente, uma vez que falta informação sobre o assunto em questão, sendo que, nunca fui abordado em sala de aula até o presente momento.
+           Após o recolhimento dos resultados decidimos em reunião organizar uma palestra para apresentar os dados recolhidos aos alunos, assim aumentando ainda mais o conhecimento dos mesmos ao tema tratado e incentivando que o repúdio seja garantido e efetivo. 
+                  Posteriormente foi realizada uma pesquisa de feedback, com o intuito de analisar os conhecimentos adquiridos pelos alunos após a apresentação, aulas, e a palestra E concluímos que, que o grau de aprendizado foi satisfatório, uma vez que, antes do projeto pouquíssimos tinham conhecimento sobre o tema tratado.
+            </p>
+        </div>
+    </div>
+
+    <div id="relevancia" class="modal">
+        <div class="modal-content">
+            <button onclick="closeModal('relevancia')">Fechar</button>
+            <h2>Relevância do Projeto</h2>
+            <p>O projeto se releva a ter um objetivo para desconstruir estereótipos em relação ao machismo na sociedade como um todo, utilizando a língua inglesa que tem bastante influência em todo o mundo. Ao expor e discutir o tema, o projeto inclui a incentivação para que o público alvo possa mudar sua visão sobre o tema tratado, tendo uma sociedade mais integral e justa.
+                O trabalho aborda como o machismo se distribui na sociedade, especificamente na língua inglesa, que é um idioma falado ao redor do mundo. Com foco em identificar e combater os termos e expressões do machismo, como por exemplo, “MAINSPLAING”, “MANTERRUPTING”, “GASLIGHTING”, e etc, o projeto ajuda a conscientizar os alunos.
+                   A pesquisa tem um papel instrutivo e importante na aplicação  de ferramentas para identificar e entender o machismo na linguagem. </p>
+
+        </div>
+    </div>
+
+    <div id="gráfico" class="modal">
+        <div class="modal-content">
+            <button onclick="closeModal('gráfico')">Fechar</button>
+            <h1>Gráficos e resultados</h1>
+            <div class="photos-container">
+                <h3>➺ Gráfico referente ao total de acerto de perguntas em porcetagem. </h3>
+                <img src="imagens/grafico1.jpg" alt="Fotografia 1">
+                <h3>➺ Gráfico referente ao total de acerto relacionado aos termos em inglês específicos.</h3>
+                <img src="imagens/grafico2.jpg" alt="Fotografia 2">
+            </div>
+
+        </div>
+    </div>
+
+    <footer style="background-color: #2f4f2f; padding: 20px; text-align: center; color: #fff; font-family: Arial, sans-serif; font-size: 14px;">
+        <p style="margin: 0;">© Desenvolvido por <strong>Bergson Domingos de Freitas</strong>.</p>
+    </footer>
+    
+</body>
+</html>
