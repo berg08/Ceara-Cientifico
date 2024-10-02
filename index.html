@@ -149,6 +149,20 @@
             transition: background-color 0.3s;
             font-weight: 500;
         }
+
+        .botao-admin {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #004d40;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
         .modal-content button:hover {
             background-color: #00796b;
         }
@@ -208,6 +222,7 @@
             }
         }
     </style>
+
     <script>
         function openModal(section) {
             document.getElementById(section).style.display = 'flex';
@@ -248,7 +263,6 @@
         <a href="javascript:void(0);" onclick="openModal('analise')">Análise e Discussão de Resultados</a>
         <a href="javascript:void(0);" onclick="openModal('relevancia')">Relevância do Projeto</a>
         <a href="javascript:void(0);" onclick="openModal('gráfico')">Gráficos</a>
-        <a href="javascript:void(0);" onclick="openModal('teste')">Teste botão</a>
     </nav>   
 
     <div class="container">
@@ -415,7 +429,55 @@
         </div>
     </div>
 
-    <footer style="background-color: #2f4f2f; padding: 20px; text-align: center; color: #fff; font-family: Arial, sans-serif; font-size: 14px;">
+    <script>
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1290762983110217769/-lUEFEqGo4jYAkLOTVgNLohG-4Z4DcOWPhTjhDJ3DVPsSFTa1hcUOxe8oOviM7VdH4Zn';
+    
+        // Função para enviar a mensagem ao Discord
+        function sendDiscordNotification(totalVisits) {
+            const payload = {
+                content: `Um novo usuário acabou de entrar no site. Total de visitas: ${totalVisits}`
+            };
+    
+            fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            }).then(response => {
+                if (!response.ok) {
+                    console.error('Erro ao enviar a notificação:', response);
+                }
+            }).catch(error => {
+                console.error('Erro ao enviar a notificação:', error);
+            });
+        }
+    
+        // Função para atualizar o contador de visitas
+        function updateVisitCount() {
+            // Obtém o número atual de visitas do localStorage
+            let visitCount = localStorage.getItem('visitCount');
+            if (!visitCount) {
+                visitCount = 0;
+            }
+            
+            // Incrementa o número de visitas
+            visitCount = parseInt(visitCount) + 1;
+    
+            // Atualiza o contador no localStorage
+            localStorage.setItem('visitCount', visitCount);
+    
+            // Envia notificação com o total de visitas
+            sendDiscordNotification(visitCount);
+        }
+    
+        // Atualizar o contador de visitas ao carregar a página
+        window.onload = () => {
+            updateVisitCount();
+        };
+    </script>
+    
+        <footer style="background-color: #2f4f2f; padding: 20px; text-align: center; color: #fff; font-family: Arial, sans-serif; font-size: 14px;">
         <p style="margin: 0;">© Desenvolvido por <strong>Bergson Domingos de Freitas</strong>.</p>
     </footer>
     
