@@ -434,52 +434,75 @@
     </div>
 
     <script>
-        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1290762983110217769/-lUEFEqGo4jYAkLOTVgNLohG-4Z4DcOWPhTjhDJ3DVPsSFTa1hcUOxe8oOviM7VdH4Zn';
-    
-        // Função para enviar a mensagem ao Discord
-        function sendDiscordNotification(totalVisits) {
-            const payload = {
-                content: `Um novo usuário acabou de entrar no site. Total de visitas: ${totalVisits}`
-            };
-    
-            fetch(DISCORD_WEBHOOK_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            }).then(response => {
-                if (!response.ok) {
-                    console.error('Erro ao enviar a notificação:', response);
-                }
-            }).catch(error => {
-                console.error('Erro ao enviar a notificação:', error);
-            });
-        }
-    
-        // Função para atualizar o contador de visitas
-        function updateVisitCount() {
-            // Obtém o número atual de visitas do localStorage
-            let visitCount = localStorage.getItem('visitCount');
-            if (!visitCount) {
-                visitCount = 0;
+    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1290762983110217769/-lUEFEqGo4jYAkLOTVgNLohG-4Z4DcOWPhTjhDJ3DVPsSFTa1hcUOxe8oOviM7VdH4Zn';
+
+    // Função para detectar o modelo do dispositivo
+    function getDeviceModel() {
+        const userAgent = navigator.userAgent;
+        let deviceModel = 'Unknown Device';
+
+        if (/iPhone/.test(userAgent)) {
+            deviceModel = 'iPhone';
+        } else if (/iPad/.test(userAgent)) {
+            deviceModel = 'iPad';
+        } else if (/Android/.test(userAgent)) {
+            const match = userAgent.match(/Android\s([0-9\.]+);?\s([^\;]+)\sBuild/);
+            if (match) {
+                deviceModel = match[2];
+            } else {
+                deviceModel = 'Android Device';
             }
-            
-            // Incrementa o número de visitas
-            visitCount = parseInt(visitCount) + 1;
-    
-            // Atualiza o contador no localStorage
-            localStorage.setItem('visitCount', visitCount);
-    
-            // Envia notificação com o total de visitas
-            sendDiscordNotification(visitCount);
+        } else if (/Windows/.test(userAgent)) {
+            deviceModel = 'Windows PC';
+        } else if (/Macintosh/.test(userAgent)) {
+            deviceModel = 'Mac';
         }
-    
-        // Atualizar o contador de visitas ao carregar a página
-        window.onload = () => {
-            updateVisitCount();
+
+        return deviceModel;
+    }
+
+    // Função para enviar a mensagem ao Discord
+    function sendDiscordNotification(totalVisits) {
+        const deviceModel = getDeviceModel();
+        const payload = {
+            content: `Um novo usuário acabou de entrar no site. Total de visitas: ${totalVisits}. Dispositivo: ${deviceModel}`
         };
-    </script>
+
+        fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        }).then(response => {
+            if (!response.ok) {
+                console.error('Erro ao enviar a notificação:', response);
+            }
+        }).catch(error => {
+            console.error('Erro ao enviar a notificação:', error);
+        });
+    }
+
+    // Função para atualizar o contador de visitas
+    function updateVisitCount() {
+        let visitCount = localStorage.getItem('visitCount');
+        if (!visitCount) {
+            visitCount = 0;
+        }
+
+        visitCount = parseInt(visitCount) + 1;
+        localStorage.setItem('visitCount', visitCount);
+
+        // Envia notificação com o total de visitas e modelo do dispositivo
+        sendDiscordNotification(visitCount);
+    }
+
+    // Atualizar o contador de visitas ao carregar a página
+    window.onload = () => {
+        updateVisitCount();
+    };
+</script>
+
     
         <footer style="background-color: #2f4f2f; padding: 20px; text-align: center; color: #fff; font-family: Arial, sans-serif; font-size: 14px;">
         <p style="margin: 0;">© Desenvolvido por <strong>Bergson Domingos de Freitas</strong>.</p>
